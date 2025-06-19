@@ -2,6 +2,13 @@ import express from "express";
 import connection from "./db_modules.js";
 import QRCode from "qrcode";
 import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+// Emular __dirname en ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const ciudadano = express.Router();
 
@@ -13,7 +20,6 @@ if (!fs.existsSync(qrCodesDir)) {
 ciudadano.get("/ciudadanos", async (req, res) => {
     try {
         const consulta = "select * from ciudadanos;";
-
         const [resultado] = await connection.query(consulta);
 
         res.send({
@@ -23,7 +29,7 @@ ciudadano.get("/ciudadanos", async (req, res) => {
     } catch (error) {
         res.status(500).send({
             status: 500,
-            data: `${(error.code, error.message)}`,
+            data: `${error.code} ${error.message}`,
         });
     }
 });
@@ -56,7 +62,6 @@ ciudadano.post("/ciudadanos/", async (req, res) => {
             fecha_nacimiento: req.body.fecha_nacimiento,
             planeta_origen: req.body.planeta_origen,
             planeta_residencia: req.body.planeta_residencia,
-            foto: req.body.foto,
             estado: req.body.estado,
         };
         const qrContent = JSON.stringify(payload);
@@ -74,12 +79,21 @@ ciudadano.post("/ciudadanos/", async (req, res) => {
             errorCorrectionLevel: "H",
         });
 
+        payload["foto"] = qrRelativePath;
+
         const consulta = "insert into ciudadanos set ?";
         const [respuesta] = await connection.query(consulta, payload);
 
+        const nuevoId = respuesta.insertId;
+
+        const [nuevoCiudadano] = await connection.query(
+            "select * from ciudadanos where id_ciudadano = ?",
+            [nuevoId],
+        );
+
         res.send({
             success: true,
-            data: respuesta,
+            data: nuevoCiudadano[0],
         });
     } catch (error) {
         res.send({
