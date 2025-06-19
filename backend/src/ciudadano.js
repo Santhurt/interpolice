@@ -23,12 +23,12 @@ ciudadano.get("/ciudadanos", async (req, res) => {
         const [resultado] = await connection.query(consulta);
 
         res.send({
-            status: 200,
+            success: true,
             data: resultado,
         });
     } catch (error) {
         res.status(500).send({
-            status: 500,
+            success: false,
             data: `${error.code} ${error.message}`,
         });
     }

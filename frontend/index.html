@@ -7,9 +7,206 @@
         <script type="module" src="./src/js/main.js"></script>
     </head>
     <body>
-        <div class="container py-4 px-3 mx-auto">
-            <h1>Hello, Bootstrap and Vite!</h1>
-            <button class="btn btn-primary">Primary button</button>
+        <header class="bg bg-primary py-3 text-white text-center">
+            <h1>Gestion de ciudadanos</h1>
+        </header>
+
+        <div class="container-fluid">
+            <div class="row m-3 shadow rounded">
+                <div class="col p-3">
+                    <button
+                        type="button"
+                        class="btn btn-success"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal-crud"
+                    >
+                        Registrar ciudadano
+                    </button>
+                </div>
+            </div>
         </div>
+
+        <!--Modal QR-->
+
+        <div
+            class="modal fade"
+            id="modal-qr"
+            tabindex="-1"
+            aria-labelledby="minimalModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold">Codigo QR</h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                    <div
+                        class="modal-body d-flex justify-content-center"
+                        id="modal-body"
+                    ></div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal"
+                        >
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Modal CURD-->
+
+        <div
+            class="modal fade"
+            id="modal-crud"
+            tabindex="-1"
+            aria-labelledby="minimalModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold">Codigo QR</h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="modal-body" id="modal-body">
+                        <form id="formulario-crud">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Nombre</label>
+                                <input
+                                    type="text"
+                                    name="nombre"
+                                    class="form-control"
+                                />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="" class="form-label"
+                                    >Apellidos</label
+                                >
+                                <input
+                                    type="text"
+                                    name="apellidos"
+                                    class="form-control"
+                                />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="" class="form-label">Apodo</label>
+                                <input
+                                    type="text"
+                                    name="apodo"
+                                    class="form-control"
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label"
+                                    >Fecha de nacimiento</label
+                                >
+                                <input
+                                    type="date"
+                                    name="fecha_nacimiento"
+                                    class="form-control"
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label"
+                                    >Planeta de origen</label
+                                >
+                                <input
+                                    type="text"
+                                    name="planeta_origen"
+                                    class="form-control"
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label"
+                                    >Planeta de residencia</label
+                                >
+                                <input
+                                    type="text"
+                                    name="planeta_residencia"
+                                    class="form-control"
+                                />
+                            </div>
+                            <select
+                                class="form-select"
+                                aria-label="Default select example"
+                                name="estado"
+                            >
+                                <option selected>Open this select menu</option>
+                                <option value="muerto">Muerto</option>
+                                <option value="vivo">Vivo</option>
+                                <option value="congelado">Congelado</option>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal"
+                        >
+                            Cerrar
+                        </button>
+
+                        <button
+                            type="submit"
+                            form="formulario-crud"
+                            class="btn btn-success crear-ciudadano"
+                            id="btn-confirmar"
+                            data-bs-dismiss="modal"
+                        >
+                            Confirmar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <main class="container-fluid">
+            <div class="row m-3 shadow rounded">
+                <div class="col">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellidos</th>
+                                <th scope="col">Apodo</th>
+                                <th scope="col">Fecha de nacimiento</th>
+                                <th scope="col">Planeta de origen</th>
+                                <th scope="col">Planeta de residencia</th>
+                                <th scope="col">QR</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-ciudadanos">
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
     </body>
 </html>
