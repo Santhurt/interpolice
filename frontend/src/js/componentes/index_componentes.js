@@ -1,4 +1,14 @@
 export const Dom = {
+    getDatosFormulario: function(formulario) {
+        const datos = {};
+        const formData = new FormData(formulario);
+        
+        for(const [key, value] of formData.entries()) {
+            datos[key] = value;
+        }
+
+        return datos;
+    },
     crearFila: function (ciudadano) {
         if ("foto" in ciudadano) {
             delete ciudadano["foto"];

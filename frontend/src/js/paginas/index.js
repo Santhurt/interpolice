@@ -2,53 +2,26 @@ import { DataCiudadano } from "../ajax/data_ciudadanos.js";
 import Swal from "sweetalert2";
 import "../../css/styles.css";
 import { Dom } from "../componentes/index_componentes.js";
+import * as bootstrap from "bootstrap";
 
 export async function renderIndex() {
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
         iconColor: "white",
-        customClass: {
-            popup: "colored-toast",
-        },
+        customClass: { popup: "colored-toast" },
         showConfirmButton: false,
         timer: 1500,
         timerProgressBar: true,
     });
 
-    const respuesta = await DataCiudadano.traerCiudadanos();
-
-    console.log(respuesta);
+    // --- Selectores del DOM ---
     const tablaCiudadanos = document.querySelector("#tabla-ciudadanos");
-
-    if (respuesta.success) {
-        const datos = respuesta.data;
-
-        const filas = datos.map((ciudadano) => {
-            return Dom.crearFila(ciudadano);
-        });
-
-        tablaCiudadanos.replaceChildren(...filas);
-    }
-
-    const modal = document.querySelector("#modal-qr");
-    modal.addEventListener("show.bs.modal", async (e) => {
-        const boton = e.relatedTarget;
-        const id = boton.id;
-
-        console.log(id);
-
-        const body = document.querySelector("#modal-body");
-        const respuesta = await DataCiudadano.traerCiudadanoPorId(id);
-
-        if (respuesta.success) {
-            const ciudadano = respuesta.data;
-            const img = document.createElement("img");
-            img.src = "http://localhost:4000/public" + ciudadano["codigo"];
-
-            body.replaceChildren(img);
-        }
-    });
+    const modalQr = document.querySelector("#modal-qr");
+    const modalCrud = document.querySelector("#modal-crud");
+    const formulario = document.querySelector("#formulario-crud");
+    const botonConfirmar = document.querySelector("#btn-confirmar");
+    const modalQrBody = document.querySelector("#modal-body");
 
     const campos = [
         "nombre",
@@ -59,101 +32,102 @@ export async function renderIndex() {
         "planeta_residencia",
         "estado",
     ];
+    let ciudadanosDatos = [];
 
-    const formulario = document.querySelector("#formulario-crud");
+    // --- Funciones auxiliares ---
+    const cargarYRenderizarCiudadanos = async () => {
+        const respuesta = await DataCiudadano.traerCiudadanos();
+        if (respuesta.success) {
+            ciudadanosDatos = respuesta.data;
+            const filas = ciudadanosDatos.map(Dom.crearFila);
+            tablaCiudadanos.replaceChildren(...filas);
+        } else {
+            console.error("Error al cargar los ciudadanos:", respuesta);
+        }
+    };
 
-    const botonConfirmar = document.querySelector("#btn-confirmar");
+    const formatearFechaParaInput = (fechaString) => {
+        if (!fechaString) return "";
+        // Asegura que la fecha se interprete correctamente sin problemas de zona horaria
+        const fecha = new Date(fechaString);
+        const anio = fecha.getUTCFullYear();
+        const mes = String(fecha.getUTCMonth() + 1).padStart(2, "0");
+        const dia = String(fecha.getUTCDate()).padStart(2, "0");
+        return `${anio}-${mes}-${dia}`;
+    };
 
-    const modalCrud = document.querySelector("#modal-crud");
+    // --- Event Listeners ---
+    modalQr.addEventListener("show.bs.modal", async (e) => {
+        const id = e.relatedTarget.id;
+        const respuesta = await DataCiudadano.traerCiudadanoPorId(id);
+
+        if (respuesta.success) {
+            const ciudadano = respuesta.data;
+            const img = document.createElement("img");
+            img.src = `http://localhost:4000/public${ciudadano.codigo}`;
+            modalQrBody.replaceChildren(img);
+        }
+    });
+
     modalCrud.addEventListener("show.bs.modal", async (e) => {
         const boton = e.relatedTarget;
         const id = boton.id;
-        formulario.setAttribute("id_ciudadano", id);
+        const esEdicion = boton.classList.contains("editar-ciudadano");
 
-        if (boton.classList.contains("editar-ciudadano")) {
-            const respuesta = await DataCiudadano.traerCiudadanoPorId(id);
-            console.log(respuesta);
+        formulario.setAttribute("data-id-ciudadano", id || "");
+        botonConfirmar.classList.toggle("editar-ciudadano", esEdicion);
+        botonConfirmar.classList.toggle("crear-ciudadano", !esEdicion);
 
-            const ciudadano = respuesta.data;
+        if (esEdicion) {
+            const ciudadano = ciudadanosDatos.find((c) => c.id_ciudadano == id);
+            if (!ciudadano) return;
 
             campos.forEach((campo) => {
-                formulario.querySelector(`[name=${campo}]`).value =
-                    ciudadano[campo];
+                const input = formulario.querySelector(`[name=${campo}]`);
+                if (campo === "fecha_nacimiento") {
+                    input.value = formatearFechaParaInput(ciudadano[campo]);
+                } else {
+                    input.value = ciudadano[campo] || "";
+                }
             });
-
-            botonConfirmar.classList.replace(
-                "crear-ciudadano",
-                "editar-ciudadano",
-            );
-
-            // TODO: Arreglar el render de la fecha
-        } else {
-            if (botonConfirmar.classList.contains("editar-ciudadano")) {
-                botonConfirmar.classList.replace(
-                    "crear-ciudadano",
-                    "editar-ciudadano",
-                );
-            }
         }
     });
 
     modalCrud.addEventListener("hide.bs.modal", () => {
-        campos.forEach((campo) => {
-            formulario.querySelector(`[name=${campo}]`).value = "";
-        });
-    });
-
-    modalCrud.addEventListener("hidden.bs.modal", () => {
-        if (botonConfirmar.classList.contains("editar-ciudadano")) {
-            botonConfirmar.classList.replace(
-                "editar-ciudadano",
-                "crear-ciudadano",
-            );
-        }
+        formulario.removeAttribute("data-id-ciudadano");
+        botonConfirmar.classList.replace("editar-ciudadano", "crear-ciudadano");
     });
 
     formulario.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const boton = e.submitter;
-        console.log(boton);
+        const esEdicion = e.submitter.classList.contains("editar-ciudadano");
+        const id = formulario.getAttribute("data-id-ciudadano");
+        const formData = new FormData(formulario);
 
-        const inputsCiudadanos = {};
+        const data = Object.fromEntries(formData);
+        console.log(formData);
+        console.log(data);
+        const respuesta = esEdicion
+            ? await DataCiudadano.actualizarCiudadano(id, data)
+            : await DataCiudadano.insertarCiudadano(data);
 
-        if (boton.classList.contains("crear-ciudadano")) {
-            campos.forEach((campo) => {
-                inputsCiudadanos[campo] = e.target.querySelector(
-                    `[name=${campo}]`,
-                ).value;
+        if (respuesta.success) {
+            Toast.fire({
+                icon: "success",
+                title: `Ciudadano ${esEdicion ? "actualizado" : "creado"} con éxito`,
             });
-
-            console.log(inputsCiudadanos);
-
-            const respuesta =
-                await DataCiudadano.insertarCiudadano(inputsCiudadanos);
-
-            if (respuesta.success) {
-                Toast.fire({
-                    icon: "success",
-                    title: "Ciudadano creado con exito",
-                });
-            } else {
-                console.log(respuesta);
-            }
-        } else if (boton.classList.contains("editar-ciudadano")) {
-            const id = formulario.getAttribute("id_ciudadano");
-
-            campos.forEach((campo) => {
-                inputsCiudadanos[campo] = formulario.querySelector(
-                    `[name=${campo}]`,
-                ).value;
+            bootstrap.Modal.getInstance(modalCrud).hide();
+            formulario.reset();
+            await cargarYRenderizarCiudadanos();
+        } else {
+            Toast.fire({
+                icon: "error",
+                title: `Error: ${respuesta.message || "No se pudo completar la operación"}`,
             });
-
-            const respuesta = await DataCiudadano.actualizarCiudadano(
-                id,
-                inputsCiudadanos,
-            );
-
-            console.log(respuesta);
+            console.error(respuesta);
         }
     });
+
+    // --- Carga inicial ---
+    await cargarYRenderizarCiudadanos();
 }
