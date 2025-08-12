@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../config/database.js";
+import sequelize from "../../config/database.js";
 
 const Ciudadano = sequelize.define(
     "Ciudadano",
@@ -11,7 +11,7 @@ const Ciudadano = sequelize.define(
             allowNull: false,
         },
         nombre: {
-            type: DataTypes.STRING(255), // Ajusta el tamaño según tu esquema de DB
+            type: DataTypes.STRING(45),
             allowNull: false,
         },
         apellidos: {
@@ -19,38 +19,33 @@ const Ciudadano = sequelize.define(
             allowNull: false,
         },
         apodo: {
-            type: DataTypes.STRING(255),
+            type: DataTypes.STRING(45),
             allowNull: true,
         },
         fecha_nacimiento: {
-            type: DataTypes.DATEONLY, // O DataTypes.DATE si incluyes la hora
-            allowNull: true,
+            type: DataTypes.DATEONLY,
         },
         planeta_origen: {
-            type: DataTypes.STRING(255),
+            type: DataTypes.STRING(45),
             allowNull: true,
         },
         planeta_residencia: {
-            type: DataTypes.STRING(255),
-            allowNull: true,
-        },
-        foto: {
-            type: DataTypes.STRING(255), // Ruta al archivo de la foto
+            type: DataTypes.STRING(45),
             allowNull: true,
         },
         codigo: {
-            type: DataTypes.STRING(255), // Ruta al archivo del código QR
+            type: DataTypes.STRING(45),
             allowNull: true,
         },
         estado: {
-            type: DataTypes.STRING(50), // Por ejemplo, 'activo', 'inactivo', etc.
+            type: DataTypes.STRING(45),
             allowNull: false,
-            defaultValue: "activo", // Valor por defecto si no se especifica
+            defaultValue: "activo",
         },
     },
     {
         tableName: "ciudadanos",
-        timestamps: false,
+        timestamps: true,
     },
 );
 

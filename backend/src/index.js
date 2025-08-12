@@ -1,17 +1,21 @@
 import express from "express";
-import ciudadano from "./src/controllers/ciudadano.js";
 import cors from "cors";
 import path from "path";
-import { fileURLToPath } from "url";
+import sequelize from "./config/database.js";
+import morgan from "morgan";
+import ciudadanoRouter from "./modules/ciudadano/ciudadano.router.js";
 import { dirname } from "path";
-import sequelize from "./src/config/database.js";
-import Ciudadano from "./src/models/ciudadano.js";
+import { fileURLToPath } from "url";
+import { config } from "dotenv";
+
+config();
 
 // Instanciamos la libreria express en la constante app
 // Heredamos todos los metodos de express
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(morgan("dev"));
 
 // configuracion para la imagen
 const __filename = fileURLToPath(import.meta.url);
@@ -20,9 +24,9 @@ const __dirname = dirname(__filename);
 const publicPath = path.join(__dirname, "public");
 app.use("/public", express.static(publicPath));
 
-app.use("/", ciudadano);
+app.use("/api", ciudadanoRouter);
 
-const puerto = 4000;
+const puerto = process.env.PORT || 4000;
 
 async function startServer() {
     try {
