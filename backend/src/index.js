@@ -8,6 +8,8 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { config } from "dotenv";
 
+import "./modules/helpers/relations.js";
+
 config();
 
 // Instanciamos la libreria express en la constante app

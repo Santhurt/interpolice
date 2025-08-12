@@ -26,11 +26,11 @@ const Ciudadano = sequelize.define(
             type: DataTypes.DATEONLY,
         },
         planeta_origen: {
-            type: DataTypes.STRING(45),
+            type: DataTypes.INTEGER,
             allowNull: true,
         },
         planeta_residencia: {
-            type: DataTypes.STRING(45),
+            type: DataTypes.INTEGER,
             allowNull: true,
         },
         codigo: {

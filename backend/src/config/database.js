@@ -1,11 +1,5 @@
 import { Sequelize } from "sequelize";
-import "dotenv/config"; 
-
-console.log("Variables de entorno cargadas:");
-console.log("DB_HOST:", process.env.DB_HOST);
-console.log("DB_USER:", process.env.DB_USER);
-console.log("DB_PASSWORD:", process.env.DB_PASSWORD ? "********" : "UNDEFINED"); // No loguear la contraseña completa
-console.log("DB_NAME:", process.env.DB_NAME);
+import "dotenv/config";
 
 const sequelize = new Sequelize(
     process.env.DB_NAME,
