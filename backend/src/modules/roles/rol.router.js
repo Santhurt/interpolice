@@ -1,5 +1,5 @@
 import express from "express";
-import { crearRol, toggleRol, traerRoles } from "./rol.controller";
+import { crearRol, toggleRol, traerRoles } from "./rol.controller.js";
 
 const rolRouter = express.Router();
 
