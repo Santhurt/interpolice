@@ -12,14 +12,11 @@ import "./modules/helpers/relations.js";
 
 config();
 
-// Instanciamos la libreria express en la constante app
-// Heredamos todos los metodos de express
 const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
 
-// configuracion para la imagen
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
