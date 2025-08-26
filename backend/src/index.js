@@ -3,12 +3,14 @@ import cors from "cors";
 import path from "path";
 import sequelize from "./config/database.js";
 import morgan from "morgan";
-import ciudadanoRouter from "./modules/ciudadano/ciudadano.router.js";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { config } from "dotenv";
 
 import "./modules/relations/ciudadano_planeta.js";
+import "./modules/relations/rol_usuario.js";
+
+import ciudadanoRouter from "./modules/ciudadano/ciudadano.router.js";
 import planetaRouter from "./modules/planetas/planeta.router.js";
 import rolRouter from "./modules/roles/rol.router.js";
 
