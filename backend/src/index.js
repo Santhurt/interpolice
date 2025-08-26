@@ -13,6 +13,7 @@ import "./modules/relations/rol_usuario.js";
 import ciudadanoRouter from "./modules/ciudadano/ciudadano.router.js";
 import planetaRouter from "./modules/planetas/planeta.router.js";
 import rolRouter from "./modules/roles/rol.router.js";
+import usuarioRouter from "./modules/usuarios/usuario.router.js";
 
 config();
 
@@ -30,6 +31,7 @@ app.use("/public", express.static(publicPath));
 app.use("/api", ciudadanoRouter);
 app.use("/api", planetaRouter);
 app.use("/api", rolRouter);
+app.use("/api", usuarioRouter);
 
 const puerto = process.env.PORT || 4000;
 
