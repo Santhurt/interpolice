@@ -16,6 +16,24 @@ export async function traerPlanetas(req, res) {
     }
 }
 
+export async function traerPorId(req, res) {
+    try {
+        const id = req.params.id;
+        const planeta = Planeta.findByPk(id);
+
+        return res.status(200).json({
+            success: true,
+            data: planeta,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+}
+
 export async function crearPlaneta(req, res) {
     try {
         const nuevoPlaneta = await Planeta.create(req.body);
