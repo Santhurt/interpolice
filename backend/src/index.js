@@ -9,6 +9,7 @@ import { fileURLToPath } from "url";
 import { config } from "dotenv";
 
 import "./modules/helpers/relations.js";
+import planetaRouter from "./modules/planetas/planeta.router.js";
 
 config();
 
@@ -24,6 +25,7 @@ const publicPath = path.join(__dirname, "public");
 app.use("/public", express.static(publicPath));
 
 app.use("/api", ciudadanoRouter);
+app.use("/api", planetaRouter);
 
 const puerto = process.env.PORT || 4000;
 
