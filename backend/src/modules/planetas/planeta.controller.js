@@ -85,3 +85,31 @@ export async function actualizarPlaneta(req, res) {
         });
     }
 }
+
+export async function eliminarPlaneta(req, res) {
+    try {
+        const id = req.params.id;
+        const rowCount = await Planeta.destroy({
+            where: {
+                id_planeta: id,
+            },
+        });
+
+        if (rowCount > 0) {
+            return res.status(200).json({
+                success: true,
+            });
+        } else {
+            return res.status(400).json({
+                success: false,
+                message: "No se elimino ningun registro",
+            });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+}
