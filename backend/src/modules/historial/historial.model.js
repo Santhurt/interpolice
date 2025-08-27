@@ -12,6 +12,16 @@ const Historial = sequelize.define(
             type: DataTypes.INTEGER,
             primaryKey: true,
         },
+        fecha: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
+        },
+        lugar: {
+            type: DataTypes.STRING(45),
+        },
+        descripcion: {
+            type: DataTypes.TEXT,
+        },
     },
     {
         tableName: "historiales",
