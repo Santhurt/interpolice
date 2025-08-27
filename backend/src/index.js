@@ -18,6 +18,7 @@ import usuarioRouter from "./modules/usuarios/usuario.router.js";
 import delitoRouter from "./modules/delitos/delito.router.js";
 import authRouter from "./modules/auth/auth.router.js";
 import historialRouter from "./modules/historial/historial.router.js";
+import uploadRouter from "./modules/image/upload.router.js";
 
 config();
 
@@ -39,6 +40,7 @@ app.use("/api", rolRouter);
 app.use("/api", usuarioRouter);
 app.use("/api", delitoRouter);
 app.use("/api", historialRouter);
+app.use("/api", uploadRouter);
 
 const puerto = process.env.PORT || 4000;
 

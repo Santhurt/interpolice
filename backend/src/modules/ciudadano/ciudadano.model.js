@@ -37,6 +37,9 @@ const Ciudadano = sequelize.define(
             type: DataTypes.STRING(45),
             allowNull: true,
         },
+        foto: {
+            type: DataTypes.STRING(150)
+        },
         estado: {
             type: DataTypes.STRING(45),
             allowNull: false,
