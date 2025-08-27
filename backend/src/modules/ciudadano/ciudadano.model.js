@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../config/database.js";
+import validator from "validator";
 
 const Ciudadano = sequelize.define(
     "Ciudadano",
@@ -13,6 +14,17 @@ const Ciudadano = sequelize.define(
         nombre: {
             type: DataTypes.STRING(45),
             allowNull: false,
+            set(value) {
+                if (value) {
+                    const nombreSanitizado = validator.trim(value);
+                    this.setDataValue("nombre", nombreSanitizado);
+                }
+            },
+            validate: {
+                notEmpty: {
+                    msg: "El campo 'nombre' no puede estar vacío.",
+                },
+            },
         },
         apellidos: {
             type: DataTypes.STRING(255),
@@ -20,10 +32,26 @@ const Ciudadano = sequelize.define(
         },
         apodo: {
             type: DataTypes.STRING(45),
-            allowNull: true,
+            allowNull: false,
+            set(value) {
+                if (value) {
+                    const apodoSantizado = validator.trim(value);
+                    this.setDataValue("apodo", apodoSantizado);
+                }
+            },
+            validate: {
+                isAlphanumeric: {
+                    msg: "El campo 'apodo' solo puede contener letras y numeros",
+                },
+            },
         },
         fecha_nacimiento: {
             type: DataTypes.DATEONLY,
+            validate: {
+                isDate: {
+                    msg: "El formato de la fecha de nacimiento es invalida",
+                },
+            },
         },
         planeta_origen: {
             type: DataTypes.INTEGER,
@@ -38,12 +66,18 @@ const Ciudadano = sequelize.define(
             allowNull: true,
         },
         foto: {
-            type: DataTypes.STRING(150)
+            type: DataTypes.STRING(150),
         },
         estado: {
-            type: DataTypes.STRING(45),
+            type: DataTypes.ENUM("vivo", "muerto", "congelado"),
             allowNull: false,
             defaultValue: "activo",
+            validate: {
+                isIn: {
+                    args: [["vivo", "muerto", "congelado"]],
+                    msg: "El estado debe ser 'activo', 'inactivo' o 'supendido'"
+                },
+            },
         },
     },
     {
