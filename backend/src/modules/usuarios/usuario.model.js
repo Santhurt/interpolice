@@ -40,6 +40,7 @@ const Usuario = sequelize.define(
         defaultScope: {
             attributes: { exclude: ["password"] },
         },
+        paranoid: true,
     },
 );
 
