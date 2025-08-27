@@ -16,6 +16,7 @@ import planetaRouter from "./modules/planetas/planeta.router.js";
 import rolRouter from "./modules/roles/rol.router.js";
 import usuarioRouter from "./modules/usuarios/usuario.router.js";
 import delitoRouter from "./modules/delitos/delito.router.js";
+import authRouter from "./modules/auth/auth.router.js";
 
 config();
 
@@ -30,6 +31,7 @@ const __dirname = dirname(__filename);
 const publicPath = path.join(__dirname, "public");
 app.use("/public", express.static(publicPath));
 
+app.use("/api", authRouter);
 app.use("/api", ciudadanoRouter);
 app.use("/api", planetaRouter);
 app.use("/api", rolRouter);
