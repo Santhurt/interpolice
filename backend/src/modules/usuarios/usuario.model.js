@@ -22,7 +22,6 @@ const Usuario = sequelize.define(
         correo: {
             type: DataTypes.STRING(100),
             allowNull: false,
-            unique: true,
         },
         password: {
             type: DataTypes.TEXT,
@@ -41,6 +40,12 @@ const Usuario = sequelize.define(
             attributes: { exclude: ["password"] },
         },
         paranoid: true,
+        indexes: [
+            {
+                unique: true,
+                fields: ["correo"],
+            },
+        ],
     },
 );
 

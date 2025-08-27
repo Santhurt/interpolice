@@ -15,6 +15,7 @@ import ciudadanoRouter from "./modules/ciudadano/ciudadano.router.js";
 import planetaRouter from "./modules/planetas/planeta.router.js";
 import rolRouter from "./modules/roles/rol.router.js";
 import usuarioRouter from "./modules/usuarios/usuario.router.js";
+import delitoRouter from "./modules/delitos/delito.router.js";
 
 config();
 
@@ -33,6 +34,7 @@ app.use("/api", ciudadanoRouter);
 app.use("/api", planetaRouter);
 app.use("/api", rolRouter);
 app.use("/api", usuarioRouter);
+app.use("/api", delitoRouter);
 
 const puerto = process.env.PORT || 4000;
 
