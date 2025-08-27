@@ -9,7 +9,7 @@ const __dirname = dirname(__filename);
 
 const storage = multer.diskStorage({
     destination: (req, res, cb) => {
-        const uploadDir = join(__dirname, "../uploads/ciudadano/");
+        const uploadDir = join(__dirname, "../../../public/ciudadanos");
 
         if (!existsSync(uploadDir)) {
             mkdirSync(uploadDir, { recursive: true });
@@ -17,9 +17,9 @@ const storage = multer.diskStorage({
 
         cb(null, uploadDir);
     },
-    filaname: (req, fila, cb) => {
+    filename: (req, file, cb) => {
         const uniqueSuffix = `${Date.now()}-${crypto.randomBytes(6).toString("hex")}`;
-        const extension = extname(file.originalName);
+        const extension = extname(file.originalname);
         cb(null, `ciudadano-${uniqueSuffix}${extension}`);
     },
 });

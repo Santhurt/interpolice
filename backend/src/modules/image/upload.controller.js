@@ -10,7 +10,7 @@ export async function subirImagen(req, res) {
         }
 
         const id = req.params.id;
-        const imageUrl = `${"http://localhost:3000"}/uploads/ciudadanos/${req.file.filename}`;
+        const imageUrl = `/public/ciudadanos/${req.file.filename}`;
 
         const filas = await Ciudadano.update(
             { foto: imageUrl },
