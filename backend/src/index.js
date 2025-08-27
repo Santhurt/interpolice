@@ -9,6 +9,7 @@ import { config } from "dotenv";
 
 import "./modules/relations/ciudadano_planeta.js";
 import "./modules/relations/rol_usuario.js";
+import "./modules/relations/historial_ciudadano.js";
 
 import ciudadanoRouter from "./modules/ciudadano/ciudadano.router.js";
 import planetaRouter from "./modules/planetas/planeta.router.js";
