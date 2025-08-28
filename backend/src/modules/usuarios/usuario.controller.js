@@ -49,10 +49,17 @@ export async function traerPorId(req, res) {
 
         const usuario = await Usuario.findByPk(id);
 
-        return res.status(200).json({
-            success: true,
-            data: usuario,
-        });
+        if (usuario) {
+            return res.status(200).json({
+                success: true,
+                data: usuario,
+            });
+        } else {
+            return res.status(400).json({
+                success: false,
+                message: "No se encontro el usuario",
+            });
+        }
     } catch (error) {
         console.log(error);
         return res.status(errorCode || 500).json({

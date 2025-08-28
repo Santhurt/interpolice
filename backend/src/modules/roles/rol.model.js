@@ -41,6 +41,7 @@ const Rol = sequelize.define(
     },
     {
         tableName: "roles",
+        paranoid: true,
     },
 );
 

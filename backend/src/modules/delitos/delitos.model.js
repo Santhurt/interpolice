@@ -23,9 +23,6 @@ const Delito = sequelize.define(
                 notEmpty: {
                     msg: "El campo 'nombre' no puede ser vacio",
                 },
-                isAlpha: {
-                    msg: "El nombre del delito solo puede contener letras",
-                },
             },
         },
         grado: {

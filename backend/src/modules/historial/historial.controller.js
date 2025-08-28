@@ -1,7 +1,21 @@
+import Ciudadano from "../ciudadano/ciudadano.model.js";
+import Delito from "../delitos/delitos.model.js";
 import Historial from "./historial.model.js";
 
 export async function registrarHitorial(req, res) {
     try {
+        const [ciudadano, delito] = await Promise.all([
+            Ciudadano.findByPk(req.body.id_ciudadano),
+            Delito.findByPk(req.body.id_delito),
+        ]);
+
+        if (!ciudadano || !delito) {
+            return res.status(400).json({
+                success: false,
+                message: "No se encontro el ciudadano o el delito a registrar",
+            });
+        }
+
         const nuevoHistorial = await Historial.create(req.body);
 
         return res.status(200).json({
@@ -35,6 +49,15 @@ export async function traerHistoriales(req, res) {
 export async function traerHistorialCiudadano(req, res) {
     try {
         const idCiudadano = req.params.id;
+
+        const ciudadano = await Ciudadano.findByPk(idCiudadano);
+
+        if (!ciudadano) {
+            return res.status(400).json({
+                success: false,
+                message: "No se encontró el ciudadano a consultar",
+            });
+        }
         const hitoriales = await Historial.findAll({
             where: {
                 id_ciudadano: idCiudadano,
@@ -58,7 +81,7 @@ export async function actualizarHistorialCiudadano(req, res) {
     try {
         const idCiudadano = req.params.id;
         const filas = await Historial.update(req.body, {
-            where: { id_ciudadano: idCiudadano },
+            where: { id_ciudadano: idCiudadano, id_delito: req.body.id_delito },
         });
 
         if (filas > 0) {

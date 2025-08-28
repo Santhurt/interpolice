@@ -38,19 +38,29 @@ export async function toggleRol(req, res) {
     try {
         const id = req.params.id;
 
-        const [countRows] = await Rol.update({
+        const rol = await Rol.findOne({
             where: {
-                id_planeta: id,
+                id_rol: id,
             },
+
+            paranoid: false,
         });
 
-        if (countRows > 0) {
+        if (!rol) {
+            throw new Error("Rol no encontrado");
+        }
+
+        if (rol.isSoftDeleted()) {
+            await rol.restore();
             return res.status(200).json({
                 success: true,
+                action: "restored",
             });
         } else {
-            return res.status(400).json({
-                success: false,
+            await rol.destroy();
+            return res.status(200).json({
+                success: true,
+                action: "deleted",
             });
         }
     } catch (error) {

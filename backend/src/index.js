@@ -56,8 +56,8 @@ async function startServer() {
         // - `force: true`: Elimina la tabla si existe y la recrea (¡PELIGROSO en producción!).
         // - `alter: true`: Realiza cambios en la tabla existente para que coincida con el modelo (más seguro para desarrollo).
         // - `false` (por defecto): No hace nada si la tabla ya existe.
-        // Para producción, se recomienda usar migraciones (Sequelize CLI) en lugar de `sync`.
-        await sequelize.sync({ alter: false }); // Usar `alter: true` para desarrollo
+        // Para producción, se recomiendausar migraciones (Sequelize CLI) en lugar de `sync`.
+        await sequelize.sync({ alter: true }); // Usar `alter: true` para desarrollo
         console.log("Modelos sincronizados con la base de datos (MySQL).");
 
         app.listen(puerto, () => {

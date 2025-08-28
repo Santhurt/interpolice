@@ -83,7 +83,11 @@ export async function actualizarDelito(req, res) {
 export async function eliminarDelito(req, res) {
     try {
         const id = req.params.id;
-        const filas = await Delito.destroy(id);
+        const filas = await Delito.destroy({
+            where: {
+                id_delito: id,
+            },
+        });
 
         if (filas > 0) {
             return res.status(200).json({
