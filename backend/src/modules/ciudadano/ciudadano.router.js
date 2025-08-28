@@ -6,8 +6,11 @@ import {
     traerCiudadanoPorId,
     traerCiudadanos,
 } from "./ciudadano.controller.js";
+import { autorizarRuta } from "../middleware/auth.middleware.js";
 
 const ciudadanoRouter = express.Router();
+
+ciudadanoRouter.use(autorizarRuta)
 
 ciudadanoRouter.get("/ciudadanos", traerCiudadanos);
 ciudadanoRouter.get("/ciudadanos/:id", traerCiudadanoPorId);

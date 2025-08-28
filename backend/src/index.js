@@ -35,8 +35,8 @@ app.use("/public", express.static(publicPath));
 
 app.use("/api", authRouter);
 app.use("/api", ciudadanoRouter);
-app.use("/api", planetaRouter);
 app.use("/api", rolRouter);
+app.use("/api", planetaRouter);
 app.use("/api", usuarioRouter);
 app.use("/api", delitoRouter);
 app.use("/api", historialRouter);

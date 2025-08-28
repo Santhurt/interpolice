@@ -1,4 +1,4 @@
-import { verificarToken } from "../helpers/token.helper";
+import { verificarToken } from "../helpers/token.helper.js";
 
 export async function autorizarRuta(req, res, next) {
     const token = req.headers.autorization;
