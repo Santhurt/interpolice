@@ -16,7 +16,9 @@ const Ciudadano = sequelize.define(
             allowNull: false,
             set(value) {
                 if (value) {
-                    const nombreSanitizado = validator.trim(value);
+                    const nombreSanitizado = validator.escape(
+                        validator.trim(value),
+                    );
                     this.setDataValue("nombre", nombreSanitizado);
                 }
             },
@@ -71,11 +73,11 @@ const Ciudadano = sequelize.define(
         estado: {
             type: DataTypes.ENUM("vivo", "muerto", "congelado"),
             allowNull: false,
-            defaultValue: "activo",
+            defaultValue: "vivo",
             validate: {
                 isIn: {
                     args: [["vivo", "muerto", "congelado"]],
-                    msg: "El estado debe ser 'activo', 'inactivo' o 'supendido'"
+                    msg: "El estado debe ser 'activo', 'inactivo' o 'supendido'",
                 },
             },
         },
