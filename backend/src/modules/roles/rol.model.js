@@ -13,10 +13,11 @@ const Rol = sequelize.define(
         },
         nombre: {
             type: DataTypes.STRING(45),
+            allowNull: false,
 
             set(value) {
                 if (value) {
-                    this.setDataValue(santizarTexto(value));
+                    this.setDataValue("nombre", santizarTexto(value));
                 }
             },
 

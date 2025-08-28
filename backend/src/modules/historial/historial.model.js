@@ -25,13 +25,15 @@ const Historial = sequelize.define(
         lugar: {
             type: DataTypes.STRING(45),
             set(value) {
-                this.setDataValue(santizarTexto(value));
+                this.setDataValue("lugar", santizarTexto(value));
             },
         },
         descripcion: {
             type: DataTypes.TEXT,
             set(value) {
-                this.setDataValue(santizarTexto(value));
+                if (value) {
+                    this.setDataValue("descripcion", santizarTexto(value));
+                }
             },
         },
     },

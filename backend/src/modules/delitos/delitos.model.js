@@ -16,7 +16,7 @@ const Delito = sequelize.define(
             allowNull: false,
             set(value) {
                 if (value) {
-                    this.setDataValue(santizarTexto(value));
+                    this.setDataValue("nombre", santizarTexto(value));
                 }
             },
             validate: {
@@ -33,7 +33,7 @@ const Delito = sequelize.define(
             allowNull: false,
             set(value) {
                 if (value) {
-                    this.setDataValue(santizarTexto(value));
+                    this.setDataValue("grado", santizarTexto(value));
                 }
             },
 
