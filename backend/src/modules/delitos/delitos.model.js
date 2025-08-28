@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../config/database.js";
+import { santizarTexto } from "../helpers/sanitizacion.js";
 
 const Delito = sequelize.define(
     "delitos",
@@ -13,10 +14,35 @@ const Delito = sequelize.define(
         nombre: {
             type: DataTypes.STRING(100),
             allowNull: false,
+            set(value) {
+                if (value) {
+                    this.setDataValue(santizarTexto(value));
+                }
+            },
+            validate: {
+                notEmpty: {
+                    msg: "El campo 'nombre' no puede ser vacio",
+                },
+                isAlpha: {
+                    msg: "El nombre del delito solo puede contener letras",
+                },
+            },
         },
         grado: {
             type: DataTypes.STRING(45),
             allowNull: false,
+            set(value) {
+                if (value) {
+                    this.setDataValue(santizarTexto(value));
+                }
+            },
+
+            notEmpty: {
+                msg: "El campo 'grado' no puede ser vacio",
+            },
+            isAlpha: {
+                msg: "El grado del delito solo puede contener letras",
+            },
         },
     },
     {
