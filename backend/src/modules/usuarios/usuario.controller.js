@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import Usuario from "./usuario.model.js";
+import { UniqueConstraintError } from "sequelize";
 
 export async function crearUsuario(req, res) {
     let errorCode;
@@ -21,6 +22,19 @@ export async function crearUsuario(req, res) {
             data: nuevoUsuario,
         });
     } catch (error) {
+        if (error instanceof UniqueConstraintError) {
+            if (error.fields.correo) {
+                return res.status(409).json({
+                    success: false,
+                    message: "El correo ya esta registrado",
+                });
+            } else {
+                return res.status(409).json({
+                    success: false,
+                    message: "El numero de documento ya esta registrado",
+                });
+            }
+        }
         console.log(error);
         return res.status(errorCode || 500).json({
             success: false,
