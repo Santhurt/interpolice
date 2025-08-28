@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../config/database.js";
-import Usuario from "../usuarios/usuario.model.js";
 
 const Rol = sequelize.define(
     "roles",
@@ -13,10 +12,29 @@ const Rol = sequelize.define(
         },
         nombre: {
             type: DataTypes.STRING(45),
+
+            set(value) {
+                if (value) {
+                    this.setDataValue(santizarTexto(value));
+                }
+            },
+
+            notEmpty: {
+                msg: "El campo 'nombre' no puede ser vacio",
+            },
+            isAlpha: {
+                msg: "El nombre del delito solo puede contener letras",
+            },
         },
         estado: {
             type: DataTypes.ENUM("activo", "inactivo"),
             defaultValue: "activo",
+            validate: {
+                isIn: {
+                    args: [["activo", "inactivo"]],
+                    msg: "El estado solo puede ser 'activo' o 'inactivo'",
+                },
+            },
         },
     },
     {
