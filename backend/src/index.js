@@ -34,10 +34,10 @@ const publicPath = path.join(__dirname, "public");
 app.use("/public", express.static(publicPath));
 
 app.use("/api", authRouter);
+app.use("/api", usuarioRouter);
 app.use("/api", ciudadanoRouter);
 app.use("/api", rolRouter);
 app.use("/api", planetaRouter);
-app.use("/api", usuarioRouter);
 app.use("/api", delitoRouter);
 app.use("/api", historialRouter);
 app.use("/api", uploadRouter);
