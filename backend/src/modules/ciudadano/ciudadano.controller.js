@@ -1,5 +1,4 @@
 import { procesarQR } from "../helpers/qr.js";
-import Planeta from "../planetas/planeta.model.js";
 import Ciudadano from "./ciudadano.model.js";
 
 export async function traerCiudadanos(req, res) {
